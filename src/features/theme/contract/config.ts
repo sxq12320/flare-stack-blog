@@ -10,6 +10,8 @@ export interface ThemeConfig {
     recentPostsLimit: number;
     /** 首页热门文章数量 */
     popularPostsLimit: number;
+    /** 首页最近相册动态数量 */
+    recentAlbumsLimit?: number;
   };
   posts: {
     /** 文章列表页每次加载的文章数量 */
@@ -18,5 +20,9 @@ export interface ThemeConfig {
   post: {
     /** 文章详情页显示的相关文章数量 */
     relatedPostsLimit: number;
+  };
+  album: {
+    /** 相册列表页每次加载的动态数量 */
+    albumsPerPage: number;
   };
 }

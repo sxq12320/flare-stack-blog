@@ -5,6 +5,7 @@ import { config } from "./config";
 import { AuthLayout } from "./layouts/auth-layout";
 import { PublicLayout } from "./layouts/public-layout";
 import { UserLayout } from "./layouts/user-layout";
+import { AlbumPage, AlbumPageSkeleton } from "./pages/album";
 import { ForgotPasswordPage } from "./pages/auth/forgot-password";
 import { LoginPage } from "./pages/auth/login";
 import { RegisterPage } from "./pages/auth/register";
@@ -37,6 +38,8 @@ export default {
   UserLayout,
   FriendLinksPage,
   FriendLinksPageSkeleton,
+  AlbumPage,
+  AlbumPageSkeleton,
   SearchPage,
   SubmitFriendLinkPage,
   LoginPage,

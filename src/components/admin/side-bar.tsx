@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
+  Camera,
   FileText,
   Image as ImageIcon,
   LayoutDashboard,
@@ -77,6 +78,12 @@ export function SideBar({
       path: "/admin/posts",
       icon: FileText,
       label: m.admin_sidebar_posts(),
+      exact: false,
+    },
+    {
+      path: "/admin/albums" as keyof FileRoutesByTo,
+      icon: Camera,
+      label: m.admin_sidebar_albums ? m.admin_sidebar_albums() : "相册管理",
       exact: false,
     },
     {

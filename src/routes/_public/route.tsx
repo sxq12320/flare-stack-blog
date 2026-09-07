@@ -37,6 +37,11 @@ function PublicLayout() {
     { label: m.nav_home(), to: "/" as const, id: "home" },
     { label: m.nav_posts(), to: "/posts" as const, id: "posts" },
     {
+      label: m.nav_album ? m.nav_album() : "相册",
+      to: "/album" as const,
+      id: "album",
+    },
+    {
       label: m.nav_friend_links(),
       to: "/friend-links" as const,
       id: "friend-links",

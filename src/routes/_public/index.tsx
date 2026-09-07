@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import theme from "@theme";
+import { recentAlbumsQuery } from "@/features/albums/queries";
 import { siteDomainQuery } from "@/features/config/queries";
 import {
   pinnedPostsQuery,
@@ -9,7 +10,8 @@ import {
 } from "@/features/posts/queries";
 import { buildCanonicalUrl, canonicalLink } from "@/lib/seo";
 
-const { recentPostsLimit, popularPostsLimit } = theme.config.home;
+const { recentPostsLimit, popularPostsLimit, recentAlbumsLimit = 6 } =
+  theme.config.home;
 
 export const Route = createFileRoute("/_public/")({
   loader: async ({ context }) => {
@@ -18,6 +20,7 @@ export const Route = createFileRoute("/_public/")({
       context.queryClient.ensureQueryData(siteDomainQuery),
       context.queryClient.ensureQueryData(pinnedPostsQuery),
       context.queryClient.ensureQueryData(popularPostsQuery(popularPostsLimit)),
+      context.queryClient.ensureQueryData(recentAlbumsQuery(recentAlbumsLimit)),
     ]);
 
     return {
@@ -37,12 +40,16 @@ function HomeRoute() {
   const { data: popularPosts } = useSuspenseQuery(
     popularPostsQuery(popularPostsLimit),
   );
+  const { data: recentAlbums } = useSuspenseQuery(
+    recentAlbumsQuery(recentAlbumsLimit),
+  );
 
   return (
     <theme.HomePage
       posts={posts}
       pinnedPosts={pinnedPosts}
       popularPosts={popularPosts}
+      recentAlbums={recentAlbums}
     />
   );
 }
