@@ -30,37 +30,60 @@ export async function getPublicAlbums(
   context: DbContext & { executionCtx: ExecutionContext },
   input: GetAlbumsCursorInput,
 ) {
-  const fetcher = async () =>
-    await AlbumRepo.getAlbumsCursor(context.db, {
-      cursor: input.cursor,
-      limit: input.limit ?? 12,
-      publicOnly: true,
-    });
+  const fetcher = async () => {
+    try {
+      return await AlbumRepo.getAlbumsCursor(context.db, {
+        cursor: input.cursor,
+        limit: input.limit ?? 12,
+        publicOnly: true,
+      });
+    } catch (err) {
+      console.error("Failed to fetch public albums:", err);
+      return { items: [], nextCursor: null };
+    }
+  };
 
-  return await CacheService.getVersioned(
-    context,
-    "albums:list",
-    ALBUMS_CACHE_KEYS.list("v", input.limit ?? 12, input.cursor),
-    AlbumListResponseSchema,
-    fetcher,
-    { ttl: "1h" },
-  );
+  try {
+    return await CacheService.getVersioned(
+      context,
+      "albums:list",
+      (version) => ALBUMS_CACHE_KEYS.list(version, input.limit ?? 12, input.cursor),
+      AlbumListResponseSchema,
+      fetcher,
+      { ttl: "1h" },
+    );
+  } catch (err) {
+    console.error("Cache getVersioned failed, falling back to fetcher:", err);
+    return await fetcher();
+  }
 }
 
 export async function getRecentAlbums(
   context: DbContext & { executionCtx: ExecutionContext },
   limit = 6,
 ) {
-  const fetcher = async () => await AlbumRepo.getRecentAlbums(context.db, limit);
+  const fetcher = async () => {
+    try {
+      return await AlbumRepo.getRecentAlbums(context.db, limit);
+    } catch (err) {
+      console.error("Failed to fetch recent albums:", err);
+      return [];
+    }
+  };
 
-  return await CacheService.getVersioned(
-    context,
-    "albums:list",
-    ALBUMS_CACHE_KEYS.recent("v", limit),
-    AlbumListResponseSchema.shape.items,
-    fetcher,
-    { ttl: "1h" },
-  );
+  try {
+    return await CacheService.getVersioned(
+      context,
+      "albums:list",
+      (version) => ALBUMS_CACHE_KEYS.recent(version, limit),
+      AlbumListResponseSchema.shape.items,
+      fetcher,
+      { ttl: "1h" },
+    );
+  } catch (err) {
+    console.error("Cache getVersioned failed, falling back to fetcher:", err);
+    return await fetcher();
+  }
 }
 
 // ============ Admin Methods ============

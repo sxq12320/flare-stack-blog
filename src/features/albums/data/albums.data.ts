@@ -105,7 +105,10 @@ export async function getAlbumsCursor(
   if (publicOnly) {
     conditions.push(eq(AlbumsTable.status, "published"));
     conditions.push(
-      sql`${AlbumsTable.publishedAt} <= ${Math.floor(Date.now() / 1000)}`,
+      or(
+        sql`${AlbumsTable.publishedAt} IS NULL`,
+        sql`${AlbumsTable.publishedAt} <= unixepoch()`,
+      ),
     );
   } else if (status) {
     conditions.push(eq(AlbumsTable.status, status));
@@ -192,11 +195,16 @@ export async function getRecentAlbums(
   db: DB,
   limit = 6,
 ): Promise<Array<AlbumItem>> {
-  const res = await getAlbumsCursor(db, {
-    limit,
-    publicOnly: true,
-  });
-  return res.items;
+  try {
+    const res = await getAlbumsCursor(db, {
+      limit,
+      publicOnly: true,
+    });
+    return res.items;
+  } catch (err) {
+    console.error("getRecentAlbums failed:", err);
+    return [];
+  }
 }
 
 export async function updateAlbum(

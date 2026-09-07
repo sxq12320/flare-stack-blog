@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import theme from "@theme";
 import { recentAlbumsQuery } from "@/features/albums/queries";
@@ -20,7 +20,9 @@ export const Route = createFileRoute("/_public/")({
       context.queryClient.ensureQueryData(siteDomainQuery),
       context.queryClient.ensureQueryData(pinnedPostsQuery),
       context.queryClient.ensureQueryData(popularPostsQuery(popularPostsLimit)),
-      context.queryClient.ensureQueryData(recentAlbumsQuery(recentAlbumsLimit)),
+      context.queryClient
+        .ensureQueryData(recentAlbumsQuery(recentAlbumsLimit))
+        .catch(() => []),
     ]);
 
     return {
@@ -40,16 +42,14 @@ function HomeRoute() {
   const { data: popularPosts } = useSuspenseQuery(
     popularPostsQuery(popularPostsLimit),
   );
-  const { data: recentAlbums } = useSuspenseQuery(
-    recentAlbumsQuery(recentAlbumsLimit),
-  );
+  const { data: recentAlbums } = useQuery(recentAlbumsQuery(recentAlbumsLimit));
 
   return (
     <theme.HomePage
       posts={posts}
       pinnedPosts={pinnedPosts}
       popularPosts={popularPosts}
-      recentAlbums={recentAlbums}
+      recentAlbums={recentAlbums ?? []}
     />
   );
 }
