@@ -18,6 +18,7 @@ import type { PostItem } from "@/features/posts/schema/posts.schema";
 import type { HomePageProps } from "@/features/theme/contract/pages";
 import { formatDate } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
+import { AlbumLightbox } from "../../components/album/album-lightbox";
 import { PostBlockCard } from "../../components/post-block-card";
 import { PostCard } from "../../components/post-card";
 
@@ -51,6 +52,7 @@ export function HomePage({
 
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [activeTab, setActiveTab] = useState<FeedTab>("all");
+  const [activeAlbum, setActiveAlbum] = useState<AlbumItem | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("fuwari_home_view_mode") as
@@ -236,7 +238,7 @@ export function HomePage({
                   animationDelay: `calc(var(--fuwari-content-delay) + ${(i + 2) * delayOffset}ms)`,
                 }}
               >
-                <FuwariAlbumCard album={album} />
+                <FuwariAlbumCard album={album} onOpen={() => setActiveAlbum(album)} />
               </div>
             ))}
 
@@ -274,7 +276,7 @@ export function HomePage({
                   animationDelay: `calc(var(--fuwari-content-delay) + ${(i + 2) * delayOffset}ms)`,
                 }}
               >
-                <FuwariAlbumCard album={album} />
+                <FuwariAlbumCard album={album} onOpen={() => setActiveAlbum(album)} />
               </div>
             ))}
 
@@ -322,6 +324,16 @@ export function HomePage({
           浏览相册
         </Link>
       </div>
+
+      {/* 点击相册卡片弹出的查看器 */}
+      {activeAlbum && (
+        <AlbumLightbox
+          album={activeAlbum}
+          authorName={siteConfig.author}
+          authorAvatar={siteConfig.theme.fuwari.avatar}
+          onClose={() => setActiveAlbum(null)}
+        />
+      )}
     </div>
   );
 }
@@ -330,7 +342,13 @@ export function HomePage({
 /* 相册卡片（小红书封面流风格）                                          */
 /* ------------------------------------------------------------------ */
 
-function FuwariAlbumCard({ album }: { album: AlbumItem }) {
+function FuwariAlbumCard({
+  album,
+  onOpen,
+}: {
+  album: AlbumItem;
+  onOpen: () => void;
+}) {
   const coverImage = album.media?.[0];
   const imageCount = album.media?.length ?? 0;
   const coverRatio =
@@ -341,10 +359,18 @@ function FuwariAlbumCard({ album }: { album: AlbumItem }) {
   const clampedRatio = Math.min(Math.max(coverRatio, 3 / 4), 16 / 9);
 
   return (
-    <Link
-      to="/album/$id"
-      params={{ id: String(album.id) }}
-      className="fuwari-card-base overflow-hidden flex flex-col group h-full border border-black/5 dark:border-white/5 hover:border-(--fuwari-primary)/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/30 transition-all duration-300"
+    <article
+      onClick={onOpen}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
+      tabIndex={0}
+      role="button"
+      aria-label="放大查看相册动态"
+      className="fuwari-card-base overflow-hidden flex flex-col group h-full cursor-pointer border border-black/5 dark:border-white/5 hover:border-(--fuwari-primary)/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/30 transition-all duration-300"
     >
       {/* Cover */}
       <div
@@ -407,15 +433,20 @@ function FuwariAlbumCard({ album }: { album: AlbumItem }) {
               {formatDate(album.publishedAt)}
             </ClientOnly>
           </time>
-          <span className="flex items-center gap-1 font-medium fuwari-text-30 group-hover:text-(--fuwari-primary) transition-colors">
+          <Link
+            to="/album/$id"
+            params={{ id: String(album.id) }}
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1 font-medium fuwari-text-30 hover:text-(--fuwari-primary) transition-colors"
+          >
             查看
             <ArrowRight
               size={12}
               className="transition-transform duration-300 group-hover:translate-x-0.5"
             />
-          </span>
+          </Link>
         </div>
       </div>
-    </Link>
+    </article>
   );
 }

@@ -8,10 +8,12 @@ import {
   MapPin,
   Pin,
 } from "lucide-react";
+import { useState } from "react";
 import type { AlbumItem } from "@/features/albums/albums.schema";
 import type { AlbumPageProps } from "@/features/theme/contract/pages";
 import { formatDate } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
+import { AlbumLightbox } from "../../components/album/album-lightbox";
 import { NineGrid } from "../../components/album/nine-grid";
 
 export function AlbumPage({
@@ -21,6 +23,7 @@ export function AlbumPage({
   fetchNextPage,
 }: AlbumPageProps) {
   const { siteConfig } = useRouteContext({ from: "__root__" });
+  const [activeAlbum, setActiveAlbum] = useState<AlbumItem | null>(null);
 
   const totalPhotos = albums.reduce(
     (sum, item) => sum + (item.media?.length ?? 0),
@@ -82,7 +85,7 @@ export function AlbumPage({
         </div>
       </div>
 
-      {/* Moments feed */}
+      {/* Moments feed：点击条目直接放大 */}
       {albums.length === 0 ? (
         <div
           className="fuwari-card-base py-24 flex flex-col items-center justify-center gap-3 fuwari-text-30 fuwari-onload-animation"
@@ -105,6 +108,7 @@ export function AlbumPage({
               album={item}
               authorName={siteConfig.author}
               authorAvatar={siteConfig.theme.fuwari.avatar}
+              onOpen={() => setActiveAlbum(item)}
             />
           </div>
         ))
@@ -124,32 +128,51 @@ export function AlbumPage({
           </button>
         </div>
       )}
+
+      {/* 点击条目弹出的查看器 */}
+      {activeAlbum && (
+        <AlbumLightbox
+          album={activeAlbum}
+          authorName={siteConfig.author}
+          authorAvatar={siteConfig.theme.fuwari.avatar}
+          onClose={() => setActiveAlbum(null)}
+        />
+      )}
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* 单条动态卡片（点击进入帖子详情）                                       */
+/* 单条动态卡片（点击直接弹出大图查看器）                                  */
 /* ------------------------------------------------------------------ */
 
 function MomentCard({
   album,
   authorName,
   authorAvatar,
+  onOpen,
 }: {
   album: AlbumItem;
   authorName: string;
   authorAvatar?: string;
+  onOpen: () => void;
 }) {
   const images = album.media ?? [];
   const isPinned = !!album.pinnedAt;
 
   return (
-    <Link
-      to="/album/$id"
-      params={{ id: String(album.id) }}
-      className="block fuwari-card-base p-5 md:p-6 border border-transparent transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/30 hover:border-(--fuwari-primary)/20 group"
-      aria-label="查看动态详情"
+    <article
+      onClick={onOpen}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
+      tabIndex={0}
+      role="button"
+      aria-label="放大查看动态"
+      className="fuwari-card-base p-5 md:p-6 border border-transparent cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/30 hover:border-(--fuwari-primary)/20 group"
     >
       {/* Header: avatar + author + date */}
       <header className="flex items-center gap-3 mb-3.5">
@@ -191,12 +214,12 @@ function MomentCard({
         </div>
       </header>
 
-      {/* Text content (truncated, full text on detail page) */}
+      {/* Text content (truncated, full text in viewer / detail page) */}
       <p className="text-sm md:text-[15px] leading-relaxed fuwari-text-75 whitespace-pre-wrap break-words line-clamp-4 mb-1">
         {album.content}
       </p>
 
-      {/* Images: nine-grid (non-interactive, whole card is the link) */}
+      {/* Images: nine-grid (non-interactive, whole card opens the viewer) */}
       {images.length > 0 && <NineGrid images={images} interactive={false} />}
 
       {/* Footer meta */}
@@ -213,14 +236,19 @@ function MomentCard({
             共 {images.length} 张
           </span>
         )}
-        <span className="ml-auto flex items-center gap-1 font-medium fuwari-text-30 group-hover:text-(--fuwari-primary) transition-colors">
+        <Link
+          to="/album/$id"
+          params={{ id: String(album.id) }}
+          onClick={(e) => e.stopPropagation()}
+          className="ml-auto flex items-center gap-1 font-medium fuwari-text-30 hover:text-(--fuwari-primary) transition-colors"
+        >
           查看详情
           <ArrowRight
             size={12}
             className="transition-transform duration-300 group-hover:translate-x-0.5"
           />
-        </span>
+        </Link>
       </footer>
-    </Link>
+    </article>
   );
 }
