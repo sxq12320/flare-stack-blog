@@ -7,6 +7,8 @@ interface NineGridProps {
   images: AlbumItem["media"];
   /** 是否可点击打开大图；列表卡片整体已是链接时应传 false */
   interactive?: boolean;
+  /** feed：列表页紧凑尺寸；detail：详情页加宽展示 */
+  variant?: "feed" | "detail";
   onImageClick?: (index: number) => void;
 }
 
@@ -16,8 +18,14 @@ interface NineGridProps {
  * - 2/4 张双列，其余三列
  * - 超过 9 张时第 9 格显示 +N 蒙层
  */
-export function NineGrid({ images, interactive = true, onImageClick }: NineGridProps) {
+export function NineGrid({
+  images,
+  interactive = true,
+  variant = "feed",
+  onImageClick,
+}: NineGridProps) {
   const count = images.length;
+  const isDetail = variant === "detail";
 
   // 单图：按原始宽高比展示，避免裁切
   if (count === 1) {
@@ -35,7 +43,7 @@ export function NineGrid({ images, interactive = true, onImageClick }: NineGridP
       />
     );
     return (
-      <div className="pt-2 max-w-md">
+      <div className={`pt-2 ${isDetail ? "max-w-2xl" : "max-w-md"}`}>
         {interactive ? (
           <button
             type="button"
@@ -58,8 +66,11 @@ export function NineGrid({ images, interactive = true, onImageClick }: NineGridP
     );
   }
 
-  const gridClass =
-    count === 2 || count === 4
+  const gridClass = isDetail
+    ? count === 2 || count === 4
+      ? "grid-cols-2 max-w-2xl"
+      : "grid-cols-3 max-w-3xl"
+    : count === 2 || count === 4
       ? "grid-cols-2 max-w-md"
       : count === 3
         ? "grid-cols-3 max-w-lg"

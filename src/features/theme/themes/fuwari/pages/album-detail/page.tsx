@@ -89,6 +89,7 @@ export function AlbumDetailPage({ album }: AlbumDetailPageProps) {
           <div className="mt-3">
             <NineGrid
               images={images}
+              variant="detail"
               onImageClick={(i) => setLightboxIndex(i)}
             />
           </div>
@@ -120,6 +121,8 @@ export function AlbumDetailPage({ album }: AlbumDetailPageProps) {
         <AlbumLightbox
           album={album}
           initialIndex={lightboxIndex}
+          authorName={authorName}
+          authorAvatar={authorAvatar}
           onClose={() => setLightboxIndex(null)}
         />
       )}
