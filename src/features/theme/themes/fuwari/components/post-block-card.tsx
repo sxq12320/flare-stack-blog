@@ -154,7 +154,11 @@ export function PostBlockCard({
           aria-label={post.title}
           className="fuwari-btn-regular w-7 h-7 rounded-lg flex items-center justify-center shrink-0 group-hover:text-(--fuwari-primary) group-hover:bg-(--fuwari-primary)/10 transition-colors"
         >
-          <ArrowUpRight size={15} strokeWidth={2} />
+          <ArrowUpRight
+            size={15}
+            strokeWidth={2}
+            className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          />
         </Link>
       </div>
     </div>
