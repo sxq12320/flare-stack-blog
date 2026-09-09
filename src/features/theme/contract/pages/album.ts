@@ -6,3 +6,7 @@ export interface AlbumPageProps {
   isFetchingNextPage?: boolean;
   fetchNextPage?: () => void;
 }
+
+export interface AlbumDetailPageProps {
+  album: AlbumItem;
+}

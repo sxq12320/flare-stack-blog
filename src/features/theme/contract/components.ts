@@ -6,6 +6,7 @@ import type {
   UserLayoutProps,
 } from "./layouts";
 import type {
+  AlbumDetailPageProps,
   AlbumPageProps,
   ForgotPasswordPageProps,
   FriendLinksPageProps,
@@ -60,6 +61,11 @@ export interface ThemeComponents {
   AlbumPage: React.ComponentType<AlbumPageProps>;
   /** 相册列表页骨架屏 */
   AlbumPageSkeleton: React.ComponentType;
+
+  /** 相册动态详情页组件 */
+  AlbumDetailPage: React.ComponentType<AlbumDetailPageProps>;
+  /** 相册动态详情页骨架屏 */
+  AlbumDetailPageSkeleton: React.ComponentType;
 
   /** 搜索页组件 */
   SearchPage: React.ComponentType<SearchPageProps>;

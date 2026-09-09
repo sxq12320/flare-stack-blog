@@ -1,6 +1,7 @@
 import * as CacheService from "@/features/cache/cache.service";
 import { purgeCDNCache } from "@/lib/invalidate";
 import type {
+  AlbumItem,
   CreateAlbumInput,
   DeleteAlbumInput,
   GetAlbumsCursorInput,
@@ -86,8 +87,45 @@ export async function getRecentAlbums(
   }
 }
 
-// ============ Admin Methods ============
+/**
+ * 获取单条已发布相册动态（公开详情页用）。
+ * 草稿、定时未到的动态对外返回 null（视为不存在）。
+ */
+export async function getPublicAlbumById(
+  context: DbContext & { executionCtx: ExecutionContext },
+  id: number,
+): Promise<AlbumItem | null> {
+  const fetcher = async (): Promise<AlbumItem | null> => {
+    try {
+      const album = await AlbumRepo.findAlbumById(context.db, id);
+      if (!album) return null;
+      if (album.status !== "published") return null;
+      if (album.publishedAt && new Date(album.publishedAt).getTime() > Date.now()) {
+        return null;
+      }
+      return album;
+    } catch (err) {
+      console.error("Failed to fetch public album by id:", err);
+      return null;
+    }
+  };
 
+  try {
+    return await CacheService.getVersioned(
+      context,
+      "albums:list",
+      (version) => [...ALBUMS_CACHE_KEYS.detail(id), version] as const,
+      AlbumItemSchema.nullable(),
+      fetcher,
+      { ttl: "1h" },
+    );
+  } catch (err) {
+    console.error("Cache getVersioned failed, falling back to fetcher:", err);
+    return await fetcher();
+  }
+}
+
+// ============ Admin Methods ============
 export async function getAllAlbumsAdmin(
   context: DbContext,
   input: GetAlbumsCursorInput,

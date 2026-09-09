@@ -19,7 +19,6 @@ import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthResetLinkRouteImport } from './routes/_auth/reset-link'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
-import { Route as PublicAlbumRouteImport } from './routes/_public/album'
 import { Route as PublicFriendLinksRouteImport } from './routes/_public/friend-links'
 import { Route as PublicPostsRouteImport } from './routes/_public/posts'
 import { Route as PublicSearchRouteImport } from './routes/_public/search'
@@ -29,6 +28,8 @@ import { Route as UserSubmitFriendLinkRouteImport } from './routes/_user/submit-
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminPostsRouteRouteImport } from './routes/admin/posts/route'
 import { Route as OauthConsentRouteImport } from './routes/oauth/consent'
+import { Route as PublicAlbumIndexRouteImport } from './routes/_public/album/index'
+import { Route as PublicAlbumIdRouteImport } from './routes/_public/album/$id'
 import { Route as PublicPostSlugRouteImport } from './routes/_public/post/$slug'
 import { Route as AdminAlbumsIndexRouteImport } from './routes/admin/albums/index'
 import { Route as AdminCommentsIndexRouteImport } from './routes/admin/comments/index'
@@ -86,11 +87,6 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PublicRouteRoute,
 } as any)
-const PublicAlbumRoute = PublicAlbumRouteImport.update({
-  id: '/album',
-  path: '/album',
-  getParentRoute: () => PublicRouteRoute,
-} as any)
 const PublicFriendLinksRoute = PublicFriendLinksRouteImport.update({
   id: '/friend-links',
   path: '/friend-links',
@@ -135,6 +131,16 @@ const OauthConsentRoute = OauthConsentRouteImport.update({
   id: '/oauth/consent',
   path: '/oauth/consent',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PublicAlbumIndexRoute = PublicAlbumIndexRouteImport.update({
+  id: '/album/',
+  path: '/album/',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicAlbumIdRoute = PublicAlbumIdRouteImport.update({
+  id: '/album/$id',
+  path: '/album/$id',
+  getParentRoute: () => PublicRouteRoute,
 } as any)
 const PublicPostSlugRoute = PublicPostSlugRouteImport.update({
   id: '/post/$slug',
@@ -191,7 +197,6 @@ export interface FileRoutesByFullPath {
   '/register': typeof AuthRegisterRoute
   '/reset-link': typeof AuthResetLinkRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/album': typeof PublicAlbumRoute
   '/friend-links': typeof PublicFriendLinksRoute
   '/posts': typeof PublicPostsRoute
   '/search': typeof PublicSearchRoute
@@ -200,7 +205,9 @@ export interface FileRoutesByFullPath {
   '/submit-friend-link': typeof UserSubmitFriendLinkRoute
   '/oauth/consent': typeof OauthConsentRoute
   '/admin/': typeof AdminIndexRoute
+  '/album/$id': typeof PublicAlbumIdRoute
   '/post/$slug': typeof PublicPostSlugRoute
+  '/album/': typeof PublicAlbumIndexRoute
   '/admin/albums/': typeof AdminAlbumsIndexRoute
   '/admin/comments/': typeof AdminCommentsIndexRoute
   '/admin/friend-links/': typeof AdminFriendLinksIndexRoute
@@ -217,7 +224,6 @@ export interface FileRoutesByTo {
   '/register': typeof AuthRegisterRoute
   '/reset-link': typeof AuthResetLinkRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/album': typeof PublicAlbumRoute
   '/friend-links': typeof PublicFriendLinksRoute
   '/posts': typeof PublicPostsRoute
   '/search': typeof PublicSearchRoute
@@ -226,7 +232,9 @@ export interface FileRoutesByTo {
   '/submit-friend-link': typeof UserSubmitFriendLinkRoute
   '/oauth/consent': typeof OauthConsentRoute
   '/admin': typeof AdminIndexRoute
+  '/album/$id': typeof PublicAlbumIdRoute
   '/post/$slug': typeof PublicPostSlugRoute
+  '/album': typeof PublicAlbumIndexRoute
   '/admin/albums': typeof AdminAlbumsIndexRoute
   '/admin/comments': typeof AdminCommentsIndexRoute
   '/admin/friend-links': typeof AdminFriendLinksIndexRoute
@@ -248,7 +256,6 @@ export interface FileRoutesById {
   '/_auth/register': typeof AuthRegisterRoute
   '/_auth/reset-link': typeof AuthResetLinkRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
-  '/_public/album': typeof PublicAlbumRoute
   '/_public/friend-links': typeof PublicFriendLinksRoute
   '/_public/posts': typeof PublicPostsRoute
   '/_public/search': typeof PublicSearchRoute
@@ -258,7 +265,9 @@ export interface FileRoutesById {
   '/oauth/consent': typeof OauthConsentRoute
   '/_public/': typeof PublicIndexRoute
   '/admin/': typeof AdminIndexRoute
+  '/_public/album/$id': typeof PublicAlbumIdRoute
   '/_public/post/$slug': typeof PublicPostSlugRoute
+  '/_public/album/': typeof PublicAlbumIndexRoute
   '/admin/albums/': typeof AdminAlbumsIndexRoute
   '/admin/comments/': typeof AdminCommentsIndexRoute
   '/admin/friend-links/': typeof AdminFriendLinksIndexRoute
@@ -279,7 +288,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-link'
     | '/verify-email'
-    | '/album'
     | '/friend-links'
     | '/posts'
     | '/search'
@@ -288,7 +296,9 @@ export interface FileRouteTypes {
     | '/submit-friend-link'
     | '/oauth/consent'
     | '/admin/'
+    | '/album/$id'
     | '/post/$slug'
+    | '/album/'
     | '/admin/albums/'
     | '/admin/comments/'
     | '/admin/friend-links/'
@@ -305,7 +315,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-link'
     | '/verify-email'
-    | '/album'
     | '/friend-links'
     | '/posts'
     | '/search'
@@ -314,7 +323,9 @@ export interface FileRouteTypes {
     | '/submit-friend-link'
     | '/oauth/consent'
     | '/admin'
+    | '/album/$id'
     | '/post/$slug'
+    | '/album'
     | '/admin/albums'
     | '/admin/comments'
     | '/admin/friend-links'
@@ -335,7 +346,6 @@ export interface FileRouteTypes {
     | '/_auth/register'
     | '/_auth/reset-link'
     | '/_auth/verify-email'
-    | '/_public/album'
     | '/_public/friend-links'
     | '/_public/posts'
     | '/_public/search'
@@ -345,7 +355,9 @@ export interface FileRouteTypes {
     | '/oauth/consent'
     | '/_public/'
     | '/admin/'
+    | '/_public/album/$id'
     | '/_public/post/$slug'
+    | '/_public/album/'
     | '/admin/albums/'
     | '/admin/comments/'
     | '/admin/friend-links/'
@@ -436,13 +448,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicIndexRouteImport
       parentRoute: typeof PublicRouteRoute
     }
-    '/_public/album': {
-      id: '/_public/album'
-      path: '/album'
-      fullPath: '/album'
-      preLoaderRoute: typeof PublicAlbumRouteImport
-      parentRoute: typeof PublicRouteRoute
-    }
     '/_public/friend-links': {
       id: '/_public/friend-links'
       path: '/friend-links'
@@ -505,6 +510,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/oauth/consent'
       preLoaderRoute: typeof OauthConsentRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_public/album/': {
+      id: '/_public/album/'
+      path: '/album'
+      fullPath: '/album/'
+      preLoaderRoute: typeof PublicAlbumIndexRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/album/$id': {
+      id: '/_public/album/$id'
+      path: '/album/$id'
+      fullPath: '/album/$id'
+      preLoaderRoute: typeof PublicAlbumIdRouteImport
+      parentRoute: typeof PublicRouteRoute
     }
     '/_public/post/$slug': {
       id: '/_public/post/$slug'
@@ -593,23 +612,25 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 interface PublicRouteRouteChildren {
-  PublicAlbumRoute: typeof PublicAlbumRoute
   PublicFriendLinksRoute: typeof PublicFriendLinksRoute
   PublicPostsRoute: typeof PublicPostsRoute
   PublicSearchRoute: typeof PublicSearchRoute
   PublicUnsubscribeRoute: typeof PublicUnsubscribeRoute
   PublicIndexRoute: typeof PublicIndexRoute
+  PublicAlbumIdRoute: typeof PublicAlbumIdRoute
   PublicPostSlugRoute: typeof PublicPostSlugRoute
+  PublicAlbumIndexRoute: typeof PublicAlbumIndexRoute
 }
 
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
-  PublicAlbumRoute: PublicAlbumRoute,
   PublicFriendLinksRoute: PublicFriendLinksRoute,
   PublicPostsRoute: PublicPostsRoute,
   PublicSearchRoute: PublicSearchRoute,
   PublicUnsubscribeRoute: PublicUnsubscribeRoute,
   PublicIndexRoute: PublicIndexRoute,
+  PublicAlbumIdRoute: PublicAlbumIdRoute,
   PublicPostSlugRoute: PublicPostSlugRoute,
+  PublicAlbumIndexRoute: PublicAlbumIndexRoute,
 }
 
 const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
@@ -690,4 +711,3 @@ declare module '@tanstack/react-start' {
     config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }
-

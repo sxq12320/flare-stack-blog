@@ -7,6 +7,7 @@ import { AuthLayout } from "./layouts/auth-layout";
 import { PublicLayout } from "./layouts/public-layout";
 import { UserLayout } from "./layouts/user-layout";
 import { AlbumPage, AlbumPageSkeleton } from "./pages/album";
+import { AlbumDetailPage, AlbumDetailPageSkeleton } from "./pages/album-detail";
 import { ForgotPasswordPage } from "./pages/auth/forgot-password";
 import { LoginPage } from "./pages/auth/login";
 import { RegisterPage } from "./pages/auth/register";
@@ -40,6 +41,8 @@ export default {
   FriendLinksPageSkeleton,
   AlbumPage,
   AlbumPageSkeleton,
+  AlbumDetailPage,
+  AlbumDetailPageSkeleton,
   SearchPage,
   SubmitFriendLinkPage,
   LoginPage,

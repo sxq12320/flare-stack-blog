@@ -1,6 +1,7 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { getAllAlbumsAdminFn } from "../api/albums.admin.api";
 import {
+  getPublicAlbumByIdFn,
   getPublicAlbumsCursorFn,
   getRecentAlbumsFn,
 } from "../api/albums.public.api";
@@ -12,9 +13,19 @@ export const ALBUMS_KEYS = {
   admin: ["albums", "admin"] as const,
 
   list: (limit = 12) => ["albums", "list", { limit }] as const,
+  detail: (id: number) => ["albums", "detail", id] as const,
   adminList: (limit = 20) => ["albums", "admin", { limit }] as const,
   recentQuery: (limit = 6) => ["albums", "recent", { limit }] as const,
 };
+
+export function albumDetailQuery(id: number) {
+  return queryOptions({
+    queryKey: ALBUMS_KEYS.detail(id),
+    queryFn: async () => {
+      return await getPublicAlbumByIdFn({ data: { id } });
+    },
+  });
+}
 
 export function recentAlbumsQuery(limit = 6) {
   return queryOptions({

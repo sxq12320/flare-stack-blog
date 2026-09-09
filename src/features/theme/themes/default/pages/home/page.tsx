@@ -336,7 +336,8 @@ function AlbumCoverCard({
 
   return (
     <Link
-      to="/album"
+      to="/album/$id"
+      params={{ id: String(album.id) }}
       className="group relative flex flex-col rounded-2xl border border-border/50 bg-card overflow-hidden hover:border-foreground/30 hover:shadow-md transition-all duration-300"
     >
       {/* Cover Image */}

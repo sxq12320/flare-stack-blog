@@ -1,6 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { GetAlbumsCursorInputSchema } from "@/features/albums/albums.schema";
+import {
+  FindAlbumByIdInputSchema,
+  GetAlbumsCursorInputSchema,
+} from "@/features/albums/albums.schema";
 import * as AlbumService from "@/features/albums/albums.service";
 import { dbMiddleware } from "@/lib/middlewares";
 
@@ -16,4 +19,11 @@ export const getRecentAlbumsFn = createServerFn()
   .inputValidator(z.object({ limit: z.number().int().min(1).max(50).optional() }))
   .handler(async ({ data, context }) => {
     return await AlbumService.getRecentAlbums(context, data.limit ?? 6);
+  });
+
+export const getPublicAlbumByIdFn = createServerFn()
+  .middleware([dbMiddleware])
+  .inputValidator(FindAlbumByIdInputSchema)
+  .handler(async ({ data, context }) => {
+    return await AlbumService.getPublicAlbumById(context, data.id);
   });

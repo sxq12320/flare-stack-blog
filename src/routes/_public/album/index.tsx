@@ -9,7 +9,7 @@ import { m } from "@/paraglide/messages";
 
 const { albumsPerPage } = theme.config.album;
 
-export const Route = createFileRoute("/_public/album")({
+export const Route = createFileRoute("/_public/album/")({
   component: AlbumRouteComponent,
   pendingComponent: AlbumSkeleton,
   loader: async ({ context }) => {

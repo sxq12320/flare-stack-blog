@@ -342,7 +342,8 @@ function FuwariAlbumCard({ album }: { album: AlbumItem }) {
 
   return (
     <Link
-      to="/album"
+      to="/album/$id"
+      params={{ id: String(album.id) }}
       className="fuwari-card-base overflow-hidden flex flex-col group h-full border border-black/5 dark:border-white/5 hover:border-(--fuwari-primary)/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/30 transition-all duration-300"
     >
       {/* Cover */}
