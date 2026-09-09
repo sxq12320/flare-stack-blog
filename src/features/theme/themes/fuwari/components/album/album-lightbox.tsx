@@ -1,5 +1,12 @@
 import { ClientOnly } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Images, MapPin, X } from "lucide-react";
+import {
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Images,
+  MapPin,
+  X,
+} from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { TouchEvent } from "react";
 import type { AlbumItem } from "@/features/albums/albums.schema";
@@ -14,11 +21,10 @@ interface AlbumLightboxProps {
 }
 
 /**
- * Facebook 风格照片查看器。
- * - 纯黑全屏，图片占满主区域
- * - 桌面端右侧信息栏：作者、正文、定位/日期、缩略图跳页
- * - 移动端：顶部计数 + 关闭，底部说明条
- * - 点击黑色背景关闭，点击图片不关闭；键盘/滑动切换
+ * 小红书 / Facebook 风格照片弹窗。
+ * 居中浮动卡片：左侧黑色看图区（箭头 + 圆点），右侧信息栏
+ * （作者、正文、定位日期、缩略图跳页）。点击遮罩关闭，
+ * 键盘左右键 / 触屏滑动切换。
  */
 export function AlbumLightbox({
   album,
@@ -77,78 +83,80 @@ export function AlbumLightbox({
 
   return (
     <div
-      className="fixed inset-0 z-100 flex bg-black animate-in fade-in duration-200"
+      className="fixed inset-0 z-100 flex items-center justify-center p-3 md:p-8 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label="图片浏览"
     >
-      {/* ===== 主图区域（点击黑背景关闭） ===== */}
+      {/* Floating card */}
       <div
-        className="relative flex-1 min-w-0 flex items-center justify-center"
-        onClick={onClose}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+        className="relative w-full max-w-5xl h-[88vh] md:h-[82vh] md:max-h-[720px] rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row bg-(--fuwari-card-bg) animate-in zoom-in-95 fade-in duration-200"
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Top-left counter */}
-        <span className="absolute top-4 left-5 z-20 text-sm font-medium text-white/70 tabular-nums select-none">
-          {index + 1} / {images.length}
-        </span>
-
-        {/* Close (mobile: top-right; desktop 端关闭按钮在侧边栏顶部) */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="md:hidden absolute top-3 right-3 z-20 p-2 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-          aria-label="关闭"
+        {/* ===== 左侧看图区 ===== */}
+        <div
+          className="relative shrink-0 h-[45%] md:h-auto md:flex-1 md:min-w-0 bg-black flex items-center justify-center"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
-          <X size={20} />
-        </button>
+          {/* Counter */}
+          {images.length > 1 && (
+            <span className="absolute top-3 left-4 z-20 text-xs font-medium text-white/70 tabular-nums select-none">
+              {index + 1} / {images.length}
+            </span>
+          )}
 
-        {/* Prev / Next arrows */}
-        {images.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                prevImage();
-              }}
-              className="absolute left-3 md:left-5 z-20 size-11 flex items-center justify-center text-white/85 bg-neutral-800/80 hover:bg-neutral-700 rounded-full shadow-lg transition-all active:scale-90"
-              aria-label="上一张"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                nextImage();
-              }}
-              className="absolute right-3 md:right-5 z-20 size-11 flex items-center justify-center text-white/85 bg-neutral-800/80 hover:bg-neutral-700 rounded-full shadow-lg transition-all active:scale-90"
-              aria-label="下一张"
-            >
-              <ChevronRight size={24} />
-            </button>
-          </>
-        )}
+          {/* Mobile close */}
+          <button
+            type="button"
+            onClick={onClose}
+            className="md:hidden absolute top-3 right-3 z-20 p-1.5 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            aria-label="关闭"
+          >
+            <X size={18} />
+          </button>
 
-        {/* Image：尽量占满视口，点击图片不关闭 */}
-        <img
-          key={current?.url}
-          src={current?.url}
-          alt={current?.fileName || "相片"}
-          onClick={(e) => e.stopPropagation()}
-          className="max-w-full max-h-full w-auto h-auto object-contain select-none animate-in fade-in zoom-in-95 duration-200"
-          draggable={false}
-        />
+          {/* Arrows */}
+          {images.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevImage();
+                }}
+                className="absolute left-3 z-20 size-9 flex items-center justify-center text-white/85 bg-neutral-800/70 hover:bg-neutral-700 rounded-full shadow-lg transition-all active:scale-90"
+                aria-label="上一张"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextImage();
+                }}
+                className="absolute right-3 z-20 size-9 flex items-center justify-center text-white/85 bg-neutral-800/70 hover:bg-neutral-700 rounded-full shadow-lg transition-all active:scale-90"
+                aria-label="下一张"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </>
+          )}
 
-        {/* Mobile bottom caption */}
-        <div className="md:hidden absolute inset-x-0 bottom-0 z-20 px-5 pt-10 pb-4 bg-gradient-to-t from-black/80 to-transparent">
-          <p className="text-sm text-white/85 line-clamp-2 leading-relaxed">
-            {album.content}
-          </p>
+          {/* Image */}
+          <img
+            key={current?.url}
+            src={current?.url}
+            alt={current?.fileName || "相片"}
+            className="max-w-full max-h-full w-auto h-auto object-contain select-none animate-in fade-in zoom-in-95 duration-200"
+            draggable={false}
+          />
+
+          {/* Dots (mobile only, desktop 用缩略图) */}
           {images.length > 1 && images.length <= 12 && (
-            <div className="mt-2.5 flex items-center gap-1.5">
+            <div className="md:hidden absolute bottom-3 inset-x-0 z-20 flex items-center justify-center gap-1.5">
               {images.map((img, i) => (
                 <button
                   key={img.id}
@@ -160,7 +168,7 @@ export function AlbumLightbox({
                   aria-label={`第 ${i + 1} 张`}
                   className={`rounded-full transition-all duration-300 ${
                     i === index
-                      ? "w-5 h-1.5 bg-white"
+                      ? "w-4 h-1.5 bg-white"
                       : "size-1.5 bg-white/40 hover:bg-white/70"
                   }`}
                 />
@@ -168,100 +176,95 @@ export function AlbumLightbox({
             </div>
           )}
         </div>
-      </div>
 
-      {/* ===== 桌面端右侧信息栏（Facebook 布局） ===== */}
-      <aside
-        className="hidden md:flex w-[380px] lg:w-[420px] shrink-0 flex-col bg-neutral-900 border-l border-white/10"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Sidebar top bar: close */}
-        <div className="flex items-center justify-end px-4 py-3 border-b border-white/10">
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-2 text-white/70 hover:text-white bg-white/5 hover:bg-white/15 rounded-full transition-colors"
-            aria-label="关闭"
-          >
-            <X size={18} />
-          </button>
-        </div>
-
-        {/* Author */}
-        <div className="flex items-center gap-3 px-5 pt-4">
-          <div className="size-10 rounded-full overflow-hidden shrink-0 ring-2 ring-white/10 bg-white/10 flex items-center justify-center">
-            {authorAvatar ? (
-              <img
-                src={authorAvatar}
-                alt={authorName}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span className="font-bold text-sm text-white/80">
-                {authorName ? authorName.slice(0, 1).toUpperCase() : "A"}
-              </span>
-            )}
-          </div>
-          <div className="min-w-0">
-            <div className="font-semibold text-white/90 text-[15px] truncate">
-              {authorName}
+        {/* ===== 右侧信息栏 ===== */}
+        <div className="flex-1 md:flex-none md:w-[340px] lg:w-[380px] min-h-0 flex flex-col border-t md:border-t-0 md:border-l border-black/5 dark:border-white/10">
+          {/* Author header */}
+          <div className="flex items-center gap-3 px-4 py-3.5 border-b border-black/5 dark:border-white/10 shrink-0">
+            <div className="size-10 rounded-full overflow-hidden shrink-0 ring-2 ring-(--fuwari-primary)/15 bg-(--fuwari-primary)/10 flex items-center justify-center">
+              {authorAvatar ? (
+                <img
+                  src={authorAvatar}
+                  alt={authorName}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="font-bold text-sm text-(--fuwari-primary)">
+                  {authorName ? authorName.slice(0, 1).toUpperCase() : "A"}
+                </span>
+              )}
             </div>
-            <div className="text-xs text-white/50 mt-0.5">
-              <ClientOnly fallback="-">
-                {formatDate(album.publishedAt, { includeTime: true })}
-              </ClientOnly>
+            <div className="flex-1 min-w-0">
+              <div className="font-semibold fuwari-text-90 text-[15px] truncate">
+                {authorName}
+              </div>
+              <div className="flex items-center gap-1 text-xs fuwari-text-50 mt-0.5">
+                <Calendar size={10} />
+                <ClientOnly fallback="-">
+                  {formatDate(album.publishedAt, { includeTime: true })}
+                </ClientOnly>
+              </div>
             </div>
+            {/* Desktop close */}
+            <button
+              type="button"
+              onClick={onClose}
+              className="hidden md:flex p-1.5 fuwari-text-50 hover:text-(--fuwari-primary) hover:bg-(--fuwari-primary)/10 rounded-full transition-colors"
+              aria-label="关闭"
+            >
+              <X size={18} />
+            </button>
           </div>
-        </div>
 
-        {/* Content (scrollable) */}
-        <div className="flex-1 overflow-y-auto px-5 py-4">
-          <p className="text-[15px] leading-relaxed text-white/80 whitespace-pre-wrap break-words">
-            {album.content}
-          </p>
+          {/* Content (scrollable) */}
+          <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3.5 fuwari-toc-scrollbar">
+            <p className="text-sm leading-relaxed fuwari-text-75 whitespace-pre-wrap break-words">
+              {album.content}
+            </p>
 
-          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/50">
-            {album.location && (
+            <div className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs fuwari-text-50">
+              {album.location && (
+                <span className="flex items-center gap-1 text-(--fuwari-primary)/80">
+                  <MapPin size={12} />
+                  {album.location}
+                </span>
+              )}
               <span className="flex items-center gap-1">
-                <MapPin size={12} />
-                {album.location}
+                <Images size={12} />
+                共 {images.length} 张
               </span>
-            )}
-            <span className="flex items-center gap-1">
-              <Images size={12} />
-              共 {images.length} 张
-            </span>
-          </div>
-        </div>
-
-        {/* Thumbnail strip */}
-        {images.length > 1 && (
-          <div className="border-t border-white/10 px-4 py-3">
-            <div className="grid grid-cols-6 gap-1.5">
-              {images.map((img, i) => (
-                <button
-                  key={img.id}
-                  type="button"
-                  onClick={() => setIndex(i)}
-                  aria-label={`第 ${i + 1} 张`}
-                  className={`relative aspect-square overflow-hidden rounded-md transition-all duration-200 ${
-                    i === index
-                      ? "ring-2 ring-white opacity-100"
-                      : "opacity-50 hover:opacity-90"
-                  }`}
-                >
-                  <img
-                    src={img.url}
-                    alt={img.fileName || `第 ${i + 1} 张`}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </button>
-              ))}
             </div>
           </div>
-        )}
-      </aside>
+
+          {/* Thumbnail strip (desktop) */}
+          {images.length > 1 && (
+            <div className="hidden md:block border-t border-black/5 dark:border-white/10 px-4 py-3 shrink-0">
+              <div className="grid grid-cols-6 gap-1.5">
+                {images.map((img, i) => (
+                  <button
+                    key={img.id}
+                    type="button"
+                    onClick={() => setIndex(i)}
+                    aria-label={`第 ${i + 1} 张`}
+                    className={`relative aspect-square overflow-hidden rounded-md transition-all duration-200 ${
+                      i === index
+                        ? "ring-2 ring-(--fuwari-primary) opacity-100"
+                        : "opacity-50 hover:opacity-90"
+                    }`}
+                  >
+                    <img
+                      src={img.url}
+                      alt={img.fileName || `第 ${i + 1} 张`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
