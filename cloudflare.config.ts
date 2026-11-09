@@ -1,1 +1,76 @@
-aW1wb3J0IHsgYmluZGluZ3MsIGRlZmluZUNvbmZpZywgZXhwb3J0cywgdHJpZ2dlcnMgfSBmcm9tICJjZi9jb25maWciOwppbXBvcnQgeyBnZXREb21haW4gfSBmcm9tICJ0bGR0cyI7CmltcG9ydCAqIGFzIGVudHJ5cG9pbnQgZnJvbSAiLi9zcmMvc2VydmVyIiB3aXRoIHsgdHlwZTogImNmLXdvcmtlciIgfTsKCi8vIExvYWRlZCBieSBOb2RlID49IDIyLjE4IChWaXRlLCBWaXRlc3QgYW5kIGBjZmApLCBuZXZlciBieSBCdW4uCi8vCi8vIERlcGxveW1lbnQgdmFsdWVzIGNvbWUgZnJvbSByZWFsIGVudmlyb25tZW50IHZhcmlhYmxlcywgd2hpY2ggV29ya2VycyBCdWlsZHMKLy8gZXhwb3NlcyBhcyBidWlsZCB2YXJpYWJsZXMgKGAuZW52YCBpcyBub3QgcmVhZCBoZXJlKS4gVGhlIHBsYWNlaG9sZGVycyBrZWVwCi8vIGBidW4gZGV2YCwgdGVzdHMgYW5kIENJIHdvcmtpbmcgd2l0aG91dCBhbnkgQ2xvdWRmbGFyZSByZXNvdXJjZXMuIFRoZSBmaXhlZAovLyBVVUlEIGlzIHdoYXQgYGJ1biBkYjptaWdyYXRlOmxvY2FsYCB0YXJnZXRzLCBzbyBpdCBtdXN0IHN0YXkgYSB2YWxpZCBEMSBpZC4KY29uc3QgZW52ID0gcHJvY2Vzcy5lbnY7CmNvbnN0IHdvcmtlck5hbWUgPSBlbnYuV09SS0VSX05BTUU/LnRyaW0oKSB8fCAid29ya2VyLW5hbWUtcGxhY2Vob2xkZXIiOwpjb25zdCBxdWV1ZU5hbWUgPSBlbnYuUVVFVUVfTkFNRT8udHJpbSgpIHx8ICJxdWV1ZS1uYW1lLXBsYWNlaG9sZGVyIjsKY29uc3QgYnVja2V0TmFtZSA9IGVudi5CVUNLRVRfTkFNRT8udHJpbSgpIHx8ICJidWNrZXQtbmFtZS1wbGFjZWhvbGRlciI7CmNvbnN0IGQxRGF0YWJhc2VJZCA9CiAgZW52LkQxX0RBVEFCQVNFX0lEPy50cmltKCkgfHwgIjAwMDAwMDAwLTAwMDAtNDAwMC04MDAwLTAwMDAwMDAwMDAwMCI7CmNvbnN0IGt2TmFtZXNwYWNlSWQgPQogIGVudi5LVl9OQU1FU1BBQ0VfSUQ/LnRyaW0oKSB8fCAiMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiOwpjb25zdCBkb21haW4gPSBlbnYuRE9NQUlOPy50cmltKCk7CmNvbnN0IHVzZVJvdXRlcyA9IFsiMSIsICJ0cnVlIiwgInllcyIsICJvbiJdLmluY2x1ZGVzKAogIGVudi5ST1VURT8udHJpbSgpLnRvTG93ZXJDYXNlKCkgPz8gIiIsCik7CgpleHBvcnQgZGVmYXVsdCBkZWZpbmVDb25maWcoKGN0eCkgPT4gewogIC8vIFRlc3RzIG9ubHkgcHJvZHVjZSB0byB0aGUgcXVldWU7IGEgY29uc3VtZXIgd291bGQgcmFjZSB0aGVpciBhc3NlcnRpb25zLgogIGNvbnN0IGlzVGVzdCA9IGN0eC5tb2RlID09PSAidGVzdCI7CgogIHJldHVybiB7CiAgICB3b3JrZXI6IHsKICAgICAgbmFtZTogd29ya2VyTmFtZSwKICAgICAgY29tcGF0aWJpbGl0eURhdGU6ICIyMDI2LTAyLTE3IiwKICAgICAgY29tcGF0aWJpbGl0eUZsYWdzOiBbIm5vZGVqc19jb21wYXQiLCAiZ2xvYmFsX2ZldGNoX3N0cmljdGx5X3B1YmxpYyJdLAogICAgICBlbnRyeXBvaW50LAogICAgICBjYWNoZTogeyBlbmFibGVkOiB0cnVlIH0sCiAgICAgIG9ic2VydmFiaWxpdHk6IHsgZW5hYmxlZDogdHJ1ZSB9LAogICAgICAuLi4oZG9tYWluICYmICF1c2VSb3V0ZXMgPyB7IGRvbWFpbnM6IFtkb21haW5dIH0gOiB7fSksCiAgICAgIHRyaWdnZXJzOiBbCiAgICAgICAgdHJpZ2dlcnMuc2NoZWR1bGVkKHsgc2NoZWR1bGU6ICIxNSAwICogKiAqIiB9KSwKICAgICAgICAuLi4oZG9tYWluICYmIHVzZVJvdXRlcwogICAgICAgICAgPyBbCiAgICAgICAgICAgICAgdHJpZ2dlcnMuZmV0Y2goewogICAgICAgICAgICAgICAgcGF0dGVybjogYCR7ZG9tYWlufS8qYCwKICAgICAgICAgICAgICAgIHpvbmU6IGVudi5aT05FX05BTUU/LnRyaW0oKSB8fCBnZXREb21haW4oZG9tYWluKSB8fCBkb21haW4sCiAgICAgICAgICAgICAgfSksCiAgICAgICAgICAgIF0KICAgICAgICAgIDogW10pLAogICAgICAgIC4uLihpc1Rlc3QKICAgICAgICAgID8gW10KICAgICAgICAgIDogWwogICAgICAgICAgICAgIHRyaWdnZXJzLnF1ZXVlKHsKICAgICAgICAgICAgICAgIG5hbWU6IHF1ZXVlTmFtZSwKICAgICAgICAgICAgICAgIG1heEJhdGNoU2l6ZTogMTAsCiAgICAgICAgICAgICAgICBtYXhCYXRjaFRpbWVvdXQ6IDUsCiAgICAgICAgICAgICAgICBtYXhSZXRyaWVzOiAzLAogICAgICAgICAgICAgIH0pLAogICAgICAgICAgICBdKSwKICAgICAgXSwKICAgICAgZW52OiB7CiAgICAgICAgREI6IGJpbmRpbmdzLmQxKHsgaWQ6IGQxRGF0YWJhc2VJZCB9KSwKICAgICAgICBLVjogYmluZGluZ3Mua3YoeyBpZDoga3ZOYW1lc3BhY2VJZCB9KSwKICAgICAgICBSMjogYmluZGluZ3MucjIoeyBuYW1lOiBidWNrZXROYW1lIH0pLAogICAgICAgIFFVRVVFOiBiaW5kaW5ncy5xdWV1ZSh7IG5hbWU6IHF1ZXVlTmFtZSB9KSwKICAgICAgfSwKICAgICAgLy8gRHVyYWJsZSBPYmplY3RzIGFyZSByZWFjaGVkIHRocm91Z2ggYGV4cG9ydHNgIGZyb20gYGNsb3VkZmxhcmU6d29ya2Vyc2AsCiAgICAgIC8vIHNvIHRoZXkgbmVlZCBubyBiaW5kaW5nLiBPbmNlIGRlcGxveWVkIHRoaXMgd2F5LCByb2xsaW5nIGJhY2sgdG8gYQogICAgICAvLyBgbWlncmF0aW9uc2AtYmFzZWQgd3JhbmdsZXIgY29uZmlnIGlzIHJlamVjdGVkLgogICAgICBleHBvcnRzOiB7CiAgICAgICAgZGVmYXVsdDogZXhwb3J0cy53b3JrZXIoeyBjYWNoZTogeyBlbmFibGVkOiBmYWxzZSB9IH0pLAogICAgICAgIEFwcDogZXhwb3J0cy53b3JrZXIoeyBjYWNoZTogeyBlbmFibGVkOiB0cnVlIH0gfSksCiAgICAgICAgUGFzc3dvcmRIYXNoZXI6IGV4cG9ydHMuZHVyYWJsZU9iamVjdCh7IHN0YXRlOiAiZGVsZXRlZCIgfSksCiAgICAgICAgUmF0ZUxpbWl0ZXI6IGV4cG9ydHMuZHVyYWJsZU9iamVjdCh7IHN0b3JhZ2U6ICJzcWxpdGUiIH0pLAogICAgICAgIFBvc3RQdWJsaXNoZXI6IGV4cG9ydHMuZHVyYWJsZU9iamVjdCh7IHN0b3JhZ2U6ICJzcWxpdGUiIH0pLAogICAgICB9LAogICAgfSwKICB9Owp9KTsK
+import { bindings, defineConfig, exports, triggers } from "cf/config";
+import { getDomain } from "tldts";
+import * as entrypoint from "./src/server" with { type: "cf-worker" };
+
+// Loaded by Node >= 22.18 (Vite, Vitest and `cf`), never by Bun.
+//
+// Deployment values come from real environment variables, which Workers Builds
+// exposes as build variables (`.env` is not read here). The placeholders keep
+// `bun dev`, tests and CI working without any Cloudflare resources. The fixed
+// UUID is what `bun db:migrate:local` targets, so it must stay a valid D1 id.
+const env = process.env;
+const workerName = env.WORKER_NAME?.trim() || "worker-name-placeholder";
+const queueName = env.QUEUE_NAME?.trim() || "queue-name-placeholder";
+const bucketName = env.BUCKET_NAME?.trim() || "bucket-name-placeholder";
+const d1DatabaseId =
+  env.D1_DATABASE_ID?.trim() || "00000000-0000-4000-8000-000000000000";
+const kvNamespaceId =
+  env.KV_NAMESPACE_ID?.trim() || "00000000000000000000000000000000";
+const domain = env.DOMAIN?.trim();
+const useRoutes = ["1", "true", "yes", "on"].includes(
+  env.ROUTE?.trim().toLowerCase() ?? "",
+);
+
+export default defineConfig((ctx) => {
+  // Tests only produce to the queue; a consumer would race their assertions.
+  const isTest = ctx.mode === "test";
+
+  return {
+    worker: {
+      name: workerName,
+      compatibilityDate: "2026-02-17",
+      compatibilityFlags: ["nodejs_compat", "global_fetch_strictly_public"],
+      entrypoint,
+      cache: { enabled: true },
+      observability: { enabled: true },
+      ...(domain && !useRoutes ? { domains: [domain] } : {}),
+      triggers: [
+        triggers.scheduled({ schedule: "15 0 * * *" }),
+        ...(domain && useRoutes
+          ? [
+              triggers.fetch({
+                pattern: `${domain}/*`,
+                zone: env.ZONE_NAME?.trim() || getDomain(domain) || domain,
+              }),
+            ]
+          : []),
+        ...(isTest
+          ? []
+          : [
+              triggers.queue({
+                name: queueName,
+                maxBatchSize: 10,
+                maxBatchTimeout: 5,
+                maxRetries: 3,
+              }),
+            ]),
+      ],
+      env: {
+        DB: bindings.d1({ id: d1DatabaseId }),
+        KV: bindings.kv({ id: kvNamespaceId }),
+        R2: bindings.r2({ name: bucketName }),
+        QUEUE: bindings.queue({ name: queueName }),
+      },
+      // Durable Objects are reached through `exports` from `cloudflare:workers`,
+      // so they need no binding. Once deployed this way, rolling back to a
+      // `migrations`-based wrangler config is rejected.
+      exports: {
+        default: exports.worker({ cache: { enabled: false } }),
+        App: exports.worker({ cache: { enabled: true } }),
+        PasswordHasher: exports.durableObject({ state: "deleted" }),
+        RateLimiter: exports.durableObject({ storage: "sqlite" }),
+        PostPublisher: exports.durableObject({ storage: "sqlite" }),
+      },
+    },
+  };
+});
