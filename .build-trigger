@@ -1,4 +1,0 @@
-Build trigger for Cloudflare Workers Builds.
-
-This empty marker file exists only to trigger the first Workers Builds
-build after connecting this repository on 2026-11-09. Safe to delete.
